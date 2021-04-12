@@ -1,0 +1,12 @@
+{
+    "name": "caicheng/ssbooking-hotel-api",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "caicheng",
+            "email": "caicheng@cc430.cn"
+        }
+    ],
+    "require": {}
+}
