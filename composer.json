@@ -8,5 +8,14 @@
             "email": "caicheng@cc430.cn"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "DishCheng\\Ssbooking\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.0.0"
+    }
 }
