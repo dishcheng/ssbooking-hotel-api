@@ -24,7 +24,9 @@ class BaseClient
     /**
      * @var string
      */
-    public $base_url='http://fxstest.xiangdo.cn';
+    public $testApi='http://fxstest.xiangdo.cn';//测试地址
+
+    public $prodApi='http://xxxxx.xiangdo.cn';//
 
     /**
      * @var
@@ -73,7 +75,11 @@ class BaseClient
         if (!blank($ReqData)&&is_array($ReqData)) {
             $params=array_merge($params, $ReqData);
         }
-        $this->res_url=$this->base_url.$this->url_info;
+        if (config('ssbook.MODE')=='PROD') {
+            $this->res_url=$this->prodApi.$this->url_info;
+        } else {
+            $this->res_url=$this->testApi.$this->url_info;
+        }
         return $params;
     }
 
@@ -86,8 +92,13 @@ class BaseClient
     {
         $params=$this->signParams();
         $result=$this->curlRequest($this->res_url, $params, 'post');
-//        Log::info("ssBookPrams", $params);
-//        Log::info("ssBookResult".$result);
+
+        if (config('ssbook.IS_DEBUG')) {
+            $time=time();
+            Log::debug($time."-ssBookPath", $this->res_url);
+            Log::debug($time."-ssBookPrams", $params);
+            Log::debug($time."-ssBookResult".$result);
+        }
         $resArr=json_decode($result, true);
 
         if (is_array($resArr)) {
