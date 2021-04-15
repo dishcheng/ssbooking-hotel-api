@@ -10,7 +10,7 @@ use DishCheng\Ssbooking\Services\Hotel\Order;
 
 /**
  * @property Hotel hotel
- * @property Order order
+ * @property Order hotelOrder
  * Class SSBookHotelService
  * @package DishCheng\Ssbooking\Services
  */

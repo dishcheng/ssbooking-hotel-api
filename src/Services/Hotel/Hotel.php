@@ -11,12 +11,23 @@ use DishCheng\Ssbooking\Core\BaseClient;
  */
 class Hotel extends BaseClient
 {
-    public function hotelList()
+    /**
+     * 酒店列表
+     * @param array $params
+     * @return $this
+     */
+    public function hotelList($params=[])
     {
         $this->url_info='/product/gethotelinfo';
+        $this->app->setReqData($params);
         return $this;
     }
 
+    /**
+     * 酒店房间列表
+     * @param $hotelId
+     * @return $this
+     */
     public function hotelRoomsList($hotelId)
     {
         $this->url_info='/product/getroominfo';

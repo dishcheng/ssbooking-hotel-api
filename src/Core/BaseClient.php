@@ -6,6 +6,7 @@ namespace DishCheng\Ssbooking\Core;
 
 use DishCheng\Ssbooking\Exceptions\SSBookingException;
 use DishCheng\Ssbooking\SSBookClient;
+use Illuminate\Support\Facades\Log;
 
 
 /**
@@ -72,7 +73,6 @@ class BaseClient
         if (!blank($ReqData)&&is_array($ReqData)) {
             $params=array_merge($params, $ReqData);
         }
-
         $this->res_url=$this->base_url.$this->url_info;
         return $params;
     }
@@ -82,11 +82,31 @@ class BaseClient
      * @return mixed
      * @throws SSBookingException
      */
-    public function post()
+    public function postAndFormat()
     {
         $params=$this->signParams();
         $result=$this->curlRequest($this->res_url, $params, 'post');
-        return json_decode($result, true);
+//        Log::info("ssBookPrams", $params);
+//        Log::info("ssBookResult".$result);
+        $resArr=json_decode($result, true);
+
+        if (is_array($resArr)) {
+            if (!isset($resArr['Code'])) {
+                if (isset($resArr['Message'])) {
+                    throw new SSBookingException($resArr['Message']);
+                }
+                throw new SSBookingException('请求异常-NoCode');
+            }
+            if ($resArr["Code"]!==200) {
+                throw new SSBookingException($resArr['Message'].'('.$resArr["Code"].')');
+            }
+            return $resArr;
+        } elseif (is_string($result)) {
+            throw new SSBookingException('请求错误-'.$result);
+        } else {
+            throw new SSBookingException('请求错误-未知类型');
+        }
+
     }
 
     /**
@@ -137,7 +157,6 @@ class BaseClient
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($query_data));
         }
-//        dd($query_data, $base_url);
         curl_setopt($ch, CURLOPT_URL, $base_url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $conn_timeout);
         curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, $dns_timeout);
@@ -152,7 +171,7 @@ class BaseClient
         $output=curl_exec($ch);
 //        dd($output);
         if ($output===FALSE)
-            $output='';
+            $output=curl_error($ch);
         curl_close($ch);
         return $output;
     }
