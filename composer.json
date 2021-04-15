@@ -1,6 +1,5 @@
 {
     "name": "dishcheng/ssbooking-hotel-api",
-    "type": "composer-plugin",
     "license": "MIT",
     "authors": [
         {
