@@ -95,9 +95,9 @@ class BaseClient
 
         if (config('ssbook.IS_DEBUG')) {
             $time=time();
-            Log::debug($time."-ssBookPath", $this->res_url);
-            Log::debug($time."-ssBookPrams", $params);
-            Log::debug($time."-ssBookResult".$result);
+            Log::debug($time."-ssBookPath:".$this->res_url);
+            Log::debug($time."-ssBookPrams:", $params);
+            Log::debug($time."-ssBookResult:".$result);
         }
         $resArr=json_decode($result, true);
 
