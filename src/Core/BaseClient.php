@@ -26,7 +26,7 @@ class BaseClient
      */
     public $testApi='http://fxstest.xiangdo.cn';//测试地址
 
-    public $prodApi='http://xxxxx.xiangdo.cn';//
+    public $prodApi='http://b2bapi.xiangdo.cn';//生产地址
 
     /**
      * @var
